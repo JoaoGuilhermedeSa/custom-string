@@ -1,5 +1,6 @@
 package com.example;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
@@ -9,11 +10,14 @@ public class CustomString implements Iterable<Character> {
     private final char[] value;
 
     public CustomString(char[] value) {
-        this.value = value;
+        this.value = new char[value.length];
+        System.arraycopy(value, 0, this.value, 0, value.length);
     }
 
     public char[] toArray() {
-        return value;
+        char[] array = new char[value.length];
+        System.arraycopy(value, 0, array, 0, value.length);
+        return array;
     }
 
     public void forEach(Consumer<? super Character> action) {
@@ -65,15 +69,7 @@ public class CustomString implements Iterable<Character> {
         }
         if (anObject instanceof CustomString) {
             CustomString anotherString = (CustomString) anObject;
-            if (value.length != anotherString.value.length) {
-                return false;
-            }
-            for (int i = 0; i < value.length; i++) {
-                if (value[i] != anotherString.value[i]) {
-                    return false;
-                }
-            }
-            return true;
+            return Arrays.equals(value, anotherString.value);
         }
         return false;
     }
@@ -83,25 +79,24 @@ public class CustomString implements Iterable<Character> {
     }
 
     public CustomString replace(char oldChar, char newChar) {
+        boolean replaced = false;
         char[] replacedValue = new char[value.length];
         for (int i = 0; i < value.length; i++) {
             if (value[i] == oldChar) {
                 replacedValue[i] = newChar;
+                replaced = true;
             } else {
                 replacedValue[i] = value[i];
             }
         }
-        return new CustomString(replacedValue);
+        return replaced ? new CustomString(replacedValue) : this;
     }
 
     public CustomString substring(int beginIndex, int endIndex) {
         if (beginIndex < 0 || endIndex > value.length || beginIndex > endIndex) {
             throw new StringIndexOutOfBoundsException();
         }
-        int subLen = endIndex - beginIndex;
-        char[] subValue = new char[subLen];
-        System.arraycopy(value, beginIndex, subValue, 0, subLen);
-        return new CustomString(subValue);
+        return new CustomString(Arrays.copyOfRange(value, beginIndex, endIndex));
     }
 
     public CustomString trim() {
@@ -112,6 +107,9 @@ public class CustomString implements Iterable<Character> {
         }
         while ((end >= start) && (value[end] <= ' ')) {
             end--;
+        }
+        if (start == 0 && end == value.length - 1) {
+            return this;
         }
         return substring(start, end + 1);
     }
@@ -136,5 +134,10 @@ public class CustomString implements Iterable<Character> {
             h = 31 * h + c;
         }
         return h;
+    }
+
+    @Override
+    public String toString() {
+        return new String(value);
     }
 }

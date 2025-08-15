@@ -14,7 +14,7 @@ public class App {
 		System.out.println();
 
 		// reverse
-		System.out.println("reverse: " + new String(customString.reverse().toArray()));
+		System.out.println("reverse: " + customString.reverse());
 
 		// iterator
 		System.out.print("iterator: ");
@@ -37,15 +37,15 @@ public class App {
 		System.out.println("isEmpty: " + customString.isEmpty());
 
 		// replace
-		System.out.println("replace: " + new String(customString.replace('l', 'p').toArray()));
+		System.out.println("replace: " + customString.replace('l', 'p'));
 
 		// substring
-		System.out.println("substring: " + new String(customString.substring(0, 5).toArray()));
+		System.out.println("substring: " + customString.substring(0, 5));
 
 		// trim
 		CustomString customStringWithSpaces = new CustomString(
 				new char[] { ' ', ' ', 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!', ' ' });
-		System.out.println("trim: " + new String(customStringWithSpaces.trim().toArray()));
+		System.out.println("trim: " + customStringWithSpaces.trim());
 
 		// toJson
 		System.out.println("toJson: " + customString.toJson());
